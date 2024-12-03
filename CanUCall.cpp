@@ -3,47 +3,40 @@
 #include <list>
 using namespace std;
 
-int finder(list<string> searched, string thing);
+bool finder(list<string> searched, string thing);
 
 int main() {
-    string answer, answer2, answer3;
-    list <string> possibleAnswersN = {"no", "No", "nah", "Nah"};
-    list <string> possibleAnswersP = {"yes", "Yes", "yeah", "Yeah"};
+    list <string> noList = {"no", "No", "nah", "Nah","nei","Nei","nee","Nee"};
+    list <string> yesList = {"Yes", "yes","Yeah","yeah","Yea","yea","Ye","ye"};
     
     cout << "Can you call tonight? ";
-    getline(cin, answer);
+    string callable;
+    getline(cin, callable);
     cout << endl;
     
-    
-    bool yield = finder(possibleAnswersN, answer);
-    bool yield4 =finder(possibleAnswersP, answer);
-    
-    if(yield == true){
+    if(finder(noList, callable)){
         cout << "Oh, okay, that's fine. But, why not, if I may ask? ";
-        getline(cin, answer2);
+        string reason;
+        getline(cin, reason);
+        
         cout << endl << "Well, this is just a program I wrote, and I have nor the time nor the knowledge to integrate an AI that can analyze your situation and answer, so I'm just gonna ask you: Is your excuse reasonable? ";
-        getline(cin, answer3);
+        string reasonable;
+        getline(cin, reasonable);
             
         cout << endl << endl;
             
-        if(size(answer3) >= 2){
-        
-            bool yield2 = finder(possibleAnswersN, answer3);
-            bool yield3 = finder(possibleAnswersP, answer3);
-            
-            if(yield2){
-                cout << "That means you can call! YIPPIE!!!";
-            }
-            else if(yield3){
-                cout << "fudge";
-            }
-            else{
-                cout << "Yeah I don't understand that so I'm just gonna count that as yes.";
-            }
+        if(finder(noList, reasonable)){
+            cout << "That means you can call! Yippie!";
+        }
+        else if(finder(yesList,reasonable)){
+            cout << "Fuck";
+        }
+        else{
+            cout<< "Yeah I don't understand that so I'll just count that as a yes.";
         }
     }
-    else if(yield4){
-        cout << "YIPPIE!!!";
+    else if(finder(yesList, callable)){
+        cout << "Yippie!";
     }
     else{
         cout << "Yeah I don't understand that so I'm just gonna count that as a yes.";
@@ -52,7 +45,7 @@ int main() {
     return 0;
 }
 
-int finder(list<string> searched, string thing) {
+bool finder(list<string> searched, string thing) {
     bool result = false;
 
     for(string sana : searched) {
