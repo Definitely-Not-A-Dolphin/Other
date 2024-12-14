@@ -14,8 +14,6 @@ void pointerMover(std::string fileName, int k);
 
 int main() {
 
-  std::cout << getElement("Words2.csv", 4, 3) << std::endl;
-
   std::cout << fileSize("Words1.csv") << std::endl;
 
   return 0;
