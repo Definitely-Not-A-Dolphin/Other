@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iostream>
 #include <list>
+#include <random>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -14,7 +15,7 @@ void pointerMover(std::string fileName, int k);
 
 int main() {
 
-  std::cout << fileSize("Words1.csv") << std::endl;
+  std::cout << fileSize("Words2.csv") << std::endl;
 
   return 0;
 }
