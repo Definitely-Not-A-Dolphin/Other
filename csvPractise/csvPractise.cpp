@@ -15,7 +15,7 @@ void pointerMover(std::string fileName, int k);
 
 int main() {
 
-  std::cout << fileSize("Words2.csv") << std::endl;
+  
 
   return 0;
 }
@@ -35,11 +35,11 @@ int fileSize(std::string fileName) {
 }
 
 std::string getElement(std::string fileName, int row, int column) {
-  std::ifstream file(fileName);
-  pointerMover(fileName, row);
+  std::ifstream readFile(fileName, std::ios::in);
+  pointerMover(readFile, row);
 
   std::string output;
-  std::getline(file, output);
+  std::getline(readFile, output);
 
   std::string tmp; // A string to store the word on each iteration.
   std::stringstream str_strm(output);
@@ -49,14 +49,12 @@ std::string getElement(std::string fileName, int row, int column) {
     wordsVector.push_back(tmp);
   }
 
-  file.close();
+  readFile.close();
 
   return wordsVector.at(column - 1);
 }
 
-void pointerMover(std::string fileName, int k) {
-  // Special thanks to Elses/Menium for writing this part!
-  std::ifstream file(fileName, std::ios::in);
+void pointerMover(std::ifstream &file, int k) {
 
   file.clear();
   file.seekg(0, std::ios::beg);
@@ -68,5 +66,4 @@ void pointerMover(std::string fileName, int k) {
       return;
     }
   }
-  file.close();
 }
