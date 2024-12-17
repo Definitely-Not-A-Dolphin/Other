@@ -3,6 +3,8 @@
 #include <string>
 using namespace std;
 
+//Hello World!
+
 bool finder(list<string> searched, string thing);
 
 int main() {
