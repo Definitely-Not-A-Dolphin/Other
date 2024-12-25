@@ -25,8 +25,27 @@ int main() {
   return 0;
 }
 
+<<<<<<< Updated upstream
 int fileSize(std::ifstream &file) {
   int lineCount = 0;
+=======
+int fileSize(std::string fileName) {
+  std::ifstream file(fileName, std::ios::in);
+
+  int lineCounter = 0;
+  std::string output;
+
+  while (getline(file, output)) {
+    lineCounter += 1;
+  }
+  file.close();
+
+  return lineCounter;
+}
+
+std::string getElement(std::ifstream &file, int row, int column) {
+  pointerMover(file, row);
+>>>>>>> Stashed changes
 
   std::string output;
   while (getline(file, output, '\n')) {
