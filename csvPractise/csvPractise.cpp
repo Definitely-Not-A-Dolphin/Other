@@ -6,7 +6,6 @@
 #include <random>
 #include <sstream>
 #include <string>
-
 #include <vector>
 
 std::string fileName;
@@ -37,7 +36,11 @@ std::string getElementChar(std::string fileName, int row, int column);
 
 int main() {
 
-  std::cout << getElementChar("Words1.csv", 2, 2) << std::endl;
+  for (int g = 1; g <= 4; g++) {
+    for (int h = 1; h <= 4; h++) {
+      std::cout << getElement("Words1.csv", h, g) << std::endl;
+    };
+  };
 
   return 0;
 }
@@ -63,14 +66,14 @@ std::string getElement(std::string fileName, int row, int column) {
   pointerMover(file, row);
 
   std::string output;
-  getline(file, output, ',');
 
-  std::string tmp; // A string to store the word on each iteration.
-  std::stringstream str_strm(output);
-  std::vector<std::string> wordsVector; // Create vector to hold our words
-  while (str_strm >> tmp) {
-    tmp.pop_back();
-    wordsVector.push_back(tmp);
+  std::vector<std::string> wordsVector = {};
+
+  while (getline(file, output, ',')) {
+
+    wordsVector.push_back(output);
+
+    output.erase();
   };
 
   file.close();
@@ -79,31 +82,51 @@ std::string getElement(std::string fileName, int row, int column) {
 }
 
 std::string getElementChar(std::string fileName, int row, int column) {
-  std::ifstream file(fileName, std::ios::in);
 
-  pointerMover(file, row);
+  std::ifstream readFile(fileName, std::ios::in);
 
-  int counter = 0;
+  pointerMover(readFile, row);
 
-  while (true) {
+  struct {
+    char thing1[36];
+    char thing2[36];
+    char thing3[36];
+    char thing4[36];
+    char thing5[36];
+    char thing6[36];
+  } val;
 
-    std::cout << "loop!" << std::endl;
+  struct {
+    std::string thing1;
+    std::string thing2;
+    std::string thing3;
+    std::string thing4;
+    std::string thing5;
+    std::string thing6;
+  } tpt;
 
-    char destination[36];
+  std::vector<char *> charVector = {val.thing1, val.thing2, val.thing3,
+                                    val.thing4, val.thing5, val.thing6};
 
-    file.get(destination, 36, ',');
+  std::vector<std::string> strVector = {tpt.thing1, tpt.thing2, tpt.thing3,
+                                        tpt.thing4, tpt.thing5, tpt.thing6};
 
-    std::string output = destination;
+  int g;
 
-    counter++;
+  for (int gloop = 1; gloop <= column; gloop++) {
 
-    std::cout << counter << std::endl << column << std::endl;
+    readFile.get(charVector.at(gloop), 36, ',');
+    readFile.seekg(1, std::ifstream::cur);
 
-    if (counter == column) {
-      std::cout << output << std::endl;
+    strVector.at(gloop) = charVector.at(gloop);
 
-      file.close();
-      return output;
-    }
+    if (gloop == column) {
+      readFile.close();
+      g = gloop;
+    };
   };
+
+  strVector.at(g).erase(strVector.at(g).begin());
+
+  return strVector.at(g);
 }
