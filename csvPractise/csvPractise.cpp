@@ -6,7 +6,6 @@
 #include <random>
 #include <sstream>
 #include <string>
-
 #include <vector>
 
 std::string fileName;
@@ -32,12 +31,49 @@ void pointerMover(std::ifstream &file, int k) {
 
 int fileSize(std::string fileName);
 
+int randomInt(int lower, int upper) {
+  std::random_device rd;
+  std::mt19937 gen(rd());
+  std::uniform_int_distribution<> dis(lower, upper);
+
+  int randomX = dis(gen);
+
+  return randomX;
+}
+
+bool vectorChecker(std::vector<std::string> searchedVector,
+                   std::string searchedWord) {
+  bool result = false;
+
+  for (std::string comparer : searchedVector) {
+    if (comparer == searchedWord) {
+      result = true;
+    }
+  };
+
+  return result;
+}
+
+bool vectorCheckerInt(std::vector<int> searchedVector, int searchedInt) {
+
+  bool result = false;
+
+  for (int h = 0; h <= searchedVector.size(); h++) {
+    if (h == searchedInt) {
+      result = true;
+      break;
+    };
+  };
+
+  return result;
+}
+
 std::string getElement(std::string fileName, int row, int column);
 std::string getElementChar(std::string fileName, int row, int column);
 
 int main() {
 
-  std::cout << getElementChar("Words1.csv", 2, 2) << std::endl;
+  std::cout << getElement("Words1.csv", 6, 1);
 
   return 0;
 }
@@ -63,14 +99,21 @@ std::string getElement(std::string fileName, int row, int column) {
   pointerMover(file, row);
 
   std::string output;
-  getline(file, output, ',');
 
-  std::string tmp; // A string to store the word on each iteration.
-  std::stringstream str_strm(output);
-  std::vector<std::string> wordsVector; // Create vector to hold our words
-  while (str_strm >> tmp) {
-    tmp.pop_back();
-    wordsVector.push_back(tmp);
+  std::vector<std::string> wordsVector = {};
+
+  while (getline(file, output, ',')) {
+    if (output[0] == ' ') {
+      output.erase(output.begin());
+    };
+
+    while (output[output.size() - 1] == ' ') {
+      output.pop_back();
+    };
+
+    wordsVector.push_back(output);
+
+    output.erase();
   };
 
   file.close();
@@ -95,6 +138,8 @@ std::string getElementChar(std::string fileName, int row, int column) {
 
     std::string output = destination;
 
+    std::cout << destination[10] << std::endl;
+
     counter++;
 
     std::cout << counter << std::endl << column << std::endl;
@@ -104,6 +149,8 @@ std::string getElementChar(std::string fileName, int row, int column) {
 
       file.close();
       return output;
-    }
+    };
+
+    output.clear();
   };
 }
