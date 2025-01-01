@@ -31,16 +31,49 @@ void pointerMover(std::ifstream &file, int k) {
 
 int fileSize(std::string fileName);
 
+int randomInt(int lower, int upper) {
+  std::random_device rd;
+  std::mt19937 gen(rd());
+  std::uniform_int_distribution<> dis(lower, upper);
+
+  int randomX = dis(gen);
+
+  return randomX;
+}
+
+bool vectorChecker(std::vector<std::string> searchedVector,
+                   std::string searchedWord) {
+  bool result = false;
+
+  for (std::string comparer : searchedVector) {
+    if (comparer == searchedWord) {
+      result = true;
+    }
+  };
+
+  return result;
+}
+
+bool vectorCheckerInt(std::vector<int> searchedVector, int searchedInt) {
+
+  bool result = false;
+
+  for (int h = 0; h <= searchedVector.size(); h++) {
+    if (h == searchedInt) {
+      result = true;
+      break;
+    };
+  };
+
+  return result;
+}
+
 std::string getElement(std::string fileName, int row, int column);
 std::string getElementChar(std::string fileName, int row, int column);
 
 int main() {
 
-  for (int g = 1; g <= 4; g++) {
-    for (int h = 1; h <= 4; h++) {
-      std::cout << getElement("Words1.csv", h, g) << std::endl;
-    };
-  };
+  std::cout << getElement("Words1.csv", 6, 1);
 
   return 0;
 }
@@ -70,6 +103,13 @@ std::string getElement(std::string fileName, int row, int column) {
   std::vector<std::string> wordsVector = {};
 
   while (getline(file, output, ',')) {
+    if (output[0] == ' ') {
+      output.erase(output.begin());
+    };
+
+    while (output[output.size() - 1] == ' ') {
+      output.pop_back();
+    };
 
     wordsVector.push_back(output);
 
@@ -79,54 +119,4 @@ std::string getElement(std::string fileName, int row, int column) {
   file.close();
 
   return wordsVector.at(column - 1);
-}
-
-std::string getElementChar(std::string fileName, int row, int column) {
-
-  std::ifstream readFile(fileName, std::ios::in);
-
-  pointerMover(readFile, row);
-
-  struct {
-    char thing1[36];
-    char thing2[36];
-    char thing3[36];
-    char thing4[36];
-    char thing5[36];
-    char thing6[36];
-  } val;
-
-  struct {
-    std::string thing1;
-    std::string thing2;
-    std::string thing3;
-    std::string thing4;
-    std::string thing5;
-    std::string thing6;
-  } tpt;
-
-  std::vector<char *> charVector = {val.thing1, val.thing2, val.thing3,
-                                    val.thing4, val.thing5, val.thing6};
-
-  std::vector<std::string> strVector = {tpt.thing1, tpt.thing2, tpt.thing3,
-                                        tpt.thing4, tpt.thing5, tpt.thing6};
-
-  int g;
-
-  for (int gloop = 1; gloop <= column; gloop++) {
-
-    readFile.get(charVector.at(gloop), 36, ',');
-    readFile.seekg(1, std::ifstream::cur);
-
-    strVector.at(gloop) = charVector.at(gloop);
-
-    if (gloop == column) {
-      readFile.close();
-      g = gloop;
-    };
-  };
-
-  strVector.at(g).erase(strVector.at(g).begin());
-
-  return strVector.at(g);
 }
