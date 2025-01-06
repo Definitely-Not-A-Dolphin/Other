@@ -8,8 +8,6 @@
 #include <string>
 #include <vector>
 
-std::string fileName;
-
 std::vector<std::string> fileNameVector = {"fileOne.csv", "fileTwo.csv",
                                            "fileThree.csv"};
 
@@ -29,7 +27,7 @@ void pointerMover(std::ifstream &file, int k) {
   }
 }
 
-int fileSize(std::string fileName);
+int fileSize(std::ifstream &file);
 
 int randomInt(int lower, int upper) {
   std::random_device rd;
@@ -68,33 +66,34 @@ bool vectorCheckerInt(std::vector<int> searchedVector, int searchedInt) {
   return result;
 }
 
-std::string getElement(std::string fileName, int row, int column);
+std::string trimWhiteSpace(std::string input);
+
+std::string getElement(std::ifstream &file, int row, int column);
 std::string getElementChar(std::string fileName, int row, int column);
 
 int main() {
 
-  std::cout << getElement("Words1.csv", 6, 1);
+  std::string thorn = " thorn ";
+
+  std::cout << thorn.size() << std::endl;
+
+  std::cout << trimWhiteSpace(" thorn ") << std::endl << trimWhiteSpace(thorn);
 
   return 0;
 }
 
-int fileSize(std::string fileName) {
-  std::ifstream file(fileName, std::ios::in);
-
+int fileSize(std::ifstream &file) {
   int lineCounter = 0;
   std::string output;
 
   while (getline(file, output)) {
-    lineCounter += 1;
-  }
-  file.close();
+    lineCounter++;
+  };
 
   return lineCounter;
 }
 
-std::string getElement(std::string fileName, int row, int column) {
-
-  std::ifstream file(fileName, std::ios::in);
+std::string getElement(std::ifstream &file, int row, int column) {
 
   pointerMover(file, row);
 
@@ -103,20 +102,24 @@ std::string getElement(std::string fileName, int row, int column) {
   std::vector<std::string> wordsVector = {};
 
   while (getline(file, output, ',')) {
-    if (output[0] == ' ') {
-      output.erase(output.begin());
-    };
-
-    while (output[output.size() - 1] == ' ') {
-      output.pop_back();
-    };
+    output = trimWhiteSpace(output);
 
     wordsVector.push_back(output);
 
     output.erase();
   };
 
-  file.close();
-
   return wordsVector.at(column - 1);
+}
+
+std::string trimWhiteSpace(std::string input) {
+  if (input[0] == ' ') {
+    input.erase(input.begin());
+  };
+
+  while (input[input.size() - 1] == ' ') {
+    input.pop_back();
+  };
+
+  return input;
 }
